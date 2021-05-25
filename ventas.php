@@ -15,7 +15,7 @@ require_once("modals/antireflejante_ventas.php");
 require_once("modals/photosensible_ventas.php");
 require_once("modals/referentes.php");
 require_once("modals/empresas_credito_fiscal.php");
-require_once("modals/modal_correlativo_factura.php");
+require_once("modals/modal_correlat_compr_cancelacion.php");
 require_once("modals/modal_oid.php");
 
 ?>

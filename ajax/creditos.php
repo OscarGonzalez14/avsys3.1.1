@@ -7,8 +7,8 @@ $creditos = new Creditos();
 
 switch ($_GET["op"]){
 
-  case 'get_correlativo_factura':
-    $datos=$creditos->get_correlativo_factura($_POST["sucursal"]);
+  case 'get_comprobantes_cancelacion':
+    $datos=$creditos->get_comprobantes_cancelacion($_POST["sucursal"]);
 
     if(is_array($datos)==true and count($datos)>0){
       foreach($datos as $row){
@@ -327,10 +327,10 @@ switch ($_GET["op"]){
     } 
   break;
 
-  case 'save_correlativo_factura':
-      $datos = $creditos->validar_correlativo($_POST["correlativo_fac"],$_POST["sucursal"]);
+  case 'save_comprobantes_cancelacion':
+      $datos = $creditos->validar_correlativo($_POST["correlativo_comprobante"],$_POST["sucursal"]);
         if(is_array($datos)==true and count($datos)==0){  
-        $creditos->registrar_impresion_factura($_POST["sucursal"],$_POST["numero_venta"],$_POST["id_usuario"],$_POST["correlativo_fac"],$_POST["id_paciente"]);
+        $creditos->registrar_impresion_comprobante($_POST["sucursal"],$_POST["numero_venta"],$_POST["id_usuario"],$_POST["correlativo_comprobante"],$_POST["id_paciente"]);
         $messages[]="ok";
       }else{
         $errors[]="error";

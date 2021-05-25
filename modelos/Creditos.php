@@ -74,7 +74,9 @@ where c.tipo_credito='Contado' and p.sucursal=? order by c.id_credito DESC;";
     //////LISTAR DETALLE DE ABONOS
      public function get_detalle_abonos($id_paciente,$numero_venta){
     $conectar= parent::conexion();
-    $sql= "SELECT a.fecha_abono,a.forma_pago,a.n_recibo,a.monto_abono,a.sucursal,u.usuario,c.monto,p.nombres,p.empresas from abonos as a inner join creditos as c on c.numero_venta=a.numero_venta inner join usuarios as u on a.id_usuario=u.id_usuario inner join pacientes as p on p.id_paciente=a.id_paciente where a.id_paciente=? and a.numero_venta=?;";
+    parent::set_names();
+
+    $sql= "select a.fecha_abono,a.forma_pago,a.n_recibo,a.monto_abono,a.sucursal,u.usuario,c.monto,p.nombres,p.empresas from abonos as a inner join creditos as c on c.numero_venta=a.numero_venta inner join usuarios as u on a.id_usuario=u.id_usuario inner join pacientes as p on p.id_paciente=a.id_paciente where a.id_paciente=? and a.numero_venta=?;";
     $sql=$conectar->prepare($sql);
     $sql->bindValue(1, $id_paciente);
     $sql->bindValue(2, $numero_venta);
@@ -141,10 +143,10 @@ pacientes as p inner join recibos as r on r.id_paciente=p.id_paciente join credi
 
     }
 
-/////////////////////GET CORRELATIVO FACTURAS
-public function get_correlativo_factura($sucursal){
+/////////////////////GET CORRELATIVO comprobantes de cancelacion
+public function get_comprobantes_cancelacion($sucursal){
   $conectar= parent::conexion();
-  $sql= "select n_correlativo+1 as n_correlativo from correlativo_factura where sucursal=? order by id_correlativo desc limit 1;";
+  $sql= "select n_correlativo+1 as n_correlativo from comprobantes_cancelacion where sucursal=? and tipo_comprobante=? order by id_correlativo desc limit 1;";
   $sql=$conectar->prepare($sql);
   $sql->bindValue(1,$sucursal);
   $sql->execute();
@@ -152,18 +154,18 @@ public function get_correlativo_factura($sucursal){
 }
 
 ///////// VALIDAR CORRELATIVO 
-public function validar_correlativo($correlativo_fac,$sucursal){
+public function validar_correlativo($correlativo_comprobante,$sucursal){
     $conectar  = parent::conexion();
     parent::set_names();
-    $sql = "select n_correlativo from correlativo_factura where n_correlativo=? and sucursal=?;";
+    $sql = "select n_correlativo from comprobantes_cancelacion where n_correlativo=? and sucursal=?;";
     $sql = $conectar->prepare($sql);
-    $sql->bindValue(1,$correlativo_fac);
+    $sql->bindValue(1,$correlativo_comprobante);
     $sql->bindValue(2,$sucursal);
     $sql->execute();
     return $resultado = $sql->fetchAll();
 }
 
-public function registrar_impresion_factura($sucursal,$numero_venta,$id_usuario,$correlativo_fac,$id_paciente){
+public function registrar_impresion_comprobante($sucursal,$numero_venta,$id_usuario,$correlativo_comprobante,$id_paciente){
     $conectar = parent::conexion();
     parent::set_names();
 
@@ -182,20 +184,21 @@ public function registrar_impresion_factura($sucursal,$numero_venta,$id_usuario,
     date_default_timezone_set('America/El_Salvador');
     $hoy = date("d-m-Y H:i:s");
 
-    $sql ="insert into correlativo_factura values(null,?,?,?,?,?,?);";
+    $sql ="insert into comprobantes_cancelacion values(null,?,?,?,?,?,?);";
     $sql = $conectar->prepare($sql);
-    $sql->bindValue(1,$correlativo_fac);
+    $sql->bindValue(1,$correlativo_comprobante);
     $sql->bindValue(2,$sucursal);
     $sql->bindValue(3,$numero_venta);
     $sql->bindValue(4,$id_usuario);
     $sql->bindValue(5,$hoy);
     $sql->bindValue(6,$titular);
+    //$sql->bindValue(7,$tipo_comprobante);
     $sql->execute();
 
     ////////////////////UPDATE EN CORTE DIARIO //////////
     $sql = "update corte_diario set n_factura = ? where n_venta =? and id_paciente=?;";
     $sql = $conectar->prepare($sql);
-    $sql->bindValue(1,$correlativo_fac);
+    $sql->bindValue(1,$correlativo_comprobante);
     $sql->bindValue(2,$numero_venta);
     $sql->bindValue(3,$id_paciente);
     $sql->execute();

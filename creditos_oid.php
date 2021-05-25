@@ -4,7 +4,7 @@ if(isset($_SESSION["usuario"])){
 require_once("header_dos.php");
 require_once("modals/modal_abonos.php");
 require_once("modals/modal_detalle_abonos.php");
-require_once("modals/modal_correlativo_factura.php");
+require_once("modals/modal_correlat_compr_cancelacion.php");
  ?>
 
  <div class="content-wrapper">

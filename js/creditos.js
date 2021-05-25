@@ -696,13 +696,13 @@ function print_invoices(id_paciente,numero_venta){
  // console.log(numero_venta);return false;
  var sucursal = $("#sucursal").val();
  var id_usuario = $("#usuario").val();
- var fecha_fac = $("#fecha_facturacion").val();
- $("#id_paciente_venta_factura").val(id_paciente);
+ var fecha_comp = $("#fecha_comprobante").val();
+ $("#id_paciente_venta_comrpobante").val(id_paciente);
  $("#print_invoices").modal("show");
- $("#n_venta_factura").val(numero_venta);
+ $("#n_venta_comprobante").val(numero_venta);
 
  $.ajax({
-  url:"ajax/creditos.php?op=get_correlativo_factura",
+  url:"ajax/creditos.php?op=get_comprobantes_cancelacion",
   method:"POST",
   data:{sucursal:sucursal},
   cache:false,
@@ -710,10 +710,10 @@ function print_invoices(id_paciente,numero_venta){
   success:function(data){ 
     console.log(data);
 
-    $("#correlativo_factura").html(data.correlativo);
+    $("#comprobantes_cancelacion").html(data.correlativo);
     var correlativo_f = data.correlativo;
     console.log(correlativo_f);
-    document.getElementById("link_invoice_print").href='imprimir_factura_pdf.php?n_venta='+numero_venta+'&'+'id_paciente='+id_paciente+'&'+'correlativo_f='+correlativo_f+'&'+'fecha_fac='+fecha_fac;
+    document.getElementById("link_invoice_print").href='imprimir_factura_pdf.php?n_venta='+numero_venta+'&'+'id_paciente='+id_paciente+'&'+'correlativo_f='+correlativo_f+'&'+'fecha_comprobante='+fecha_comprobante;
   }
 })
 
@@ -726,15 +726,16 @@ function registrar_impresion(){
 
   let sucursal = $("#sucursal").val();
   let id_usuario = $("#usuario").val();
-  let correlativo_fac = $("#correlativo_factura").html();
-  let numero_venta = $("#n_venta_factura").val();
+  let correlativo_comprobante = $("#comprobantes_cancelacion").html();
+  let numero_venta = $("#n_venta_comprobante").val();
   var id_paciente = $("#id_paciente_venta_factura").val();
+  let tipo_comprobante = $("#tipo_comprobante").val();
   $("#print_invoices").modal("hide"); 
   ///////////// REGISTRA CORRELATIVO EN BD ////////////////
   $.ajax({
-    url:"ajax/creditos.php?op=save_correlativo_factura",
+    url:"ajax/creditos.php?op=save_comprobantes_cancelacion",
     method:"POST",
-    data:{sucursal:sucursal,numero_venta:numero_venta,id_usuario:id_usuario,correlativo_fac:correlativo_fac,id_paciente:id_paciente},
+    data:{sucursal:sucursal,numero_venta:numero_venta,id_usuario:id_usuario,correlativo_comprobante:correlativo_comprobante,id_paciente:id_paciente,tipo_comprobante:tipo_comprobante},
     cache:false,
     dataType:"json",
     success:function(data){ 

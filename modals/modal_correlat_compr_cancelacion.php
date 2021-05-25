@@ -5,11 +5,12 @@
 
       <div class="modal-body" style="color: #ff6500;display: block;margin-left: auto;margin-right: auto;">
         <div>
-          <i class="fas fa-exclamation-triangle fa-2x" style="color: #ff6500;text-align: center;"></i> <span style="font-size: 30px;color: #404040;font-family: font-family: Helvetica, Arial, sans-serif;"><b>Correlativo</span> <span style="font-size: 30px;color: red;font-family: font-family: Helvetica, Arial, sans-serif;"><span style="color: red" id="correlativo_factura"></span></span></b><br>
+          <i class="fas fa-exclamation-triangle fa-2x" style="color: #ff6500;text-align: center;"></i> <span style="font-size: 30px;color: #404040;font-family: font-family: Helvetica, Arial, sans-serif;"><b>Correlativo</span> <span style="font-size: 30px;color: red;font-family: font-family: Helvetica, Arial, sans-serif;"><span style="color: red" id="comprobantes_cancelacion"></span></span></b><br>
         </div>
       </div>
-      <input type="hidden" name="" id="n_venta_factura">
-      <input type="hidden" name="" id="id_paciente_venta_factura">
+      <input type="hidden" name="" id="n_venta_comprobante">
+      <input type="hidden" name="" id="id_paciente_venta_comprobante">
+      <input type="hidden" name="" id="tipo_comprobante" value="factura">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <a id="link_invoice_print" target="_blank" href=""><button type="button" class="btn btn-primary" onClick="registrar_impresion();">Imprimir</button></a>
