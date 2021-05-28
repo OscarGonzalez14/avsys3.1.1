@@ -130,6 +130,8 @@ public function agrega_detalle_venta(){
           $descripcion = "TRATAMIENTOS: ".$item["desc_producto"];
         }elseif($cat_prod=="accesorios"){
           $descripcion = "ACC: ".$item["desc_producto"];
+        }elseif($cat_prod=="servicio"){
+          $descripcion = "Servicios: ".$item["desc_producto"];
         }
       }
 

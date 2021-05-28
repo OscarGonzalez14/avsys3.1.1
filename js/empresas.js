@@ -68,7 +68,7 @@ function guardarEmpresa(){
 
 function explode(){
     location.reload();
-  }
+}
 
 function listar_en_pacientes(){
 
@@ -147,21 +147,6 @@ function listar_en_pacientes(){
 			   }//cerrando language
 	       
 	}).DataTable();
-}
-
-/////////////RELLENAR LA EMPRESA DE PACIENTE EMPRESARIAL
-function agregar_empresa_pac(id_empresa){      
-$.ajax({
-	url:"ajax/empresas.php?op=buscar_empresa_paciente",
-	method:"POST",
-	data:{id_empresa:id_empresa},
-	dataType:"json",
-	success:function(data){                       
-		$('#empresasModal').modal('hide');		
-		$('#empresa').val(data.nombre);	
-	}
-})
-
 }
 
 	

@@ -174,10 +174,107 @@ function listar_creditos_cauto(){
        }).DataTable();
 }
 
+
+/////////////RELLENAR LA EMPRESA DE PACIENTE EMPRESARIAL
+function agregar_empresa_pac(id_empresa){      
+$.ajax({
+  url:"ajax/empresas.php?op=buscar_empresa_paciente",
+  method:"POST",
+  data:{id_empresa:id_empresa},
+  dataType:"json",
+  success:function(data){                       
+    $('#empresasModal').modal('hide');    
+    $('#empresa').val(data.nombre);
+    setTimeout ("listar_creditos_oid();",1500); 
+  }
+})
+
+}
+
+function listar_ventas_ccf(){
+  let empresa = $("#empresa").val();
+  if(empresa==""){
+    Swal.fire('Error!, Debe Seleccionar una empresa','','error');
+    return false
+  }
+  $("#modal_ccf_group").modal('show');
+  $("#data_ventas_ccf_group").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "aProcessing": true,//Activamos el procesamiento del datatables
+      "aServerSide": true,//Paginación y filtrado realizados por el servidor   
+      //dom: 'Bfrti',
+      //"buttons": [ "excel"],
+      "searching": true,
+      "ajax":
+        {
+          url: 'ajax/creditos.php?op=listar_cobros_grupal_ccf',
+          type : "post",
+          dataType : "json",
+          data:{empresa:empresa},       
+          error: function(e){
+            console.log(e.responseText);  
+          }
+        },
+      "bDestroy": true,
+      "responsive": true,
+      "bInfo":true,
+      "iDisplayLength": 15,//Por cada 10 registros hace una paginación
+      "order": [[ 0, "desc" ]],//Ordenar (columna,orden)
+
+      "language": {
+
+        "sProcessing":     "Procesando...",
+
+        "sLengthMenu":     "Mostrar _MENU_ registros",
+
+        "sZeroRecords":    "No se encontraron resultados",
+
+        "sEmptyTable":     "Ningún dato disponible en esta tabla",
+
+        "sInfo":           "Mostrando un total de _TOTAL_ registros",
+
+        "sInfoEmpty":      "Mostrando un total de 0 registros",
+
+        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+
+        "sInfoPostFix":    "",
+
+        "sSearch":         "Buscar:",
+
+        "sUrl":            "",
+
+        "sInfoThousands":  ",",
+
+        "sLoadingRecords": "Cargando...",
+
+        "oPaginate": {
+
+          "sFirst":    "Primero",
+
+          "sLast":     "Último",
+
+          "sNext":     "Siguiente",
+
+          "sPrevious": "Anterior"
+
+        },
+
+        "oAria": {
+
+          "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+        }
+
+         }//cerrando language
+    }).buttons().container().appendTo('#data_ventas_ccf_group_wrapper .col-md-6:eq(0)');
+}
+
 ///////////////LISTAR CREDITOS DESCUENTO EN PLANILLA
 function listar_creditos_oid(){
   var sucursal= $("#sucursal").val();
-  var empresa= $("#empresa").val();
+  let empresa= $("#empresa").val();
 
   tabla_creditos_oid=$('#creditos_oid').dataTable(
   {
@@ -1392,6 +1489,40 @@ function eliminar_oid(id_orden, numero_orden, id_paciente){
   }else if (cat_user=="optometra","asesor") {
       setTimeout ("Swal.fire('No posse permisos para eliminar OID','','error')", 100);
     }
+}
+
+/////////////////////////agregar item a credito fiscal //////////////
+var array_total_ccf = [];
+$(document).on('click', '.add_item_ccf', function(){
+
+  let id_item = $(this).attr("id");
+  let monto_item = $(this).attr("value");
+  let n_venta = $(this).attr("name");
+  
+  let chk = document.getElementById(id_item);
+  let status_chk = chk.checked;
+
+  if (status_chk==true) {
+    let obj ={
+      monto_venta : monto_item,
+      numero_venta : n_venta
+    }
+    array_total_ccf.push(obj);
+    calcularMontoCcf();
+  }else if(status_chk==false){
+    let index_obj = array_total_ccf.findIndex(x => x.numero_venta==n_venta);
+    array_total_ccf.splice(index_obj, 1);
+    calcularMontoCcf();
+  }
+
+});
+
+function calcularMontoCcf(){
+  let totalFinalCcf = 0;
+  for(let i=0; i<array_total_ccf.length;i++){
+    totalFinalCcf += parseFloat(array_total_ccf[i].monto_venta)
+  }
+  $("#monto_total_ccf_group").html(totalFinalCcf.toFixed(2));
 }
 
 init();

@@ -46,9 +46,9 @@ require_once("modals/modal_correlativo_factura.php");
                 </div>
 
                 <div class="col-sm-2">
-                  <label>Listar Pacientes</label>
+                  <label>CCF</label>
                     <div class="input-group">
-                      <button class="btn btn-primary btn-block" id="select_paciente_venta" onClick="listar_creditos_oid();"><i class="fas fa-file-alt"></i></button>
+                      <button class="btn btn-primary" id="select_paciente_venta" onClick="listar_ventas_ccf();"><i class="fas fa-file-alt"></i> Emitir CCF</button>
                   </div>
                 </div>
 
@@ -60,7 +60,7 @@ require_once("modals/modal_correlativo_factura.php");
                 </div>
                 
               </div>
-        <table id="creditos_oid" class="table-hover" width="100%">
+        <table id="creditos_oid" class="table-hover table-bordered" width="100%" style="font-size:12px">
            <thead style="background:#034f84;color:white;text-align: center;">
             <tr>
             <th style='text-align: center;'>No. Venta</th>
@@ -113,6 +113,45 @@ require_once("modals/modal_correlativo_factura.php");
           <!-- /.modal-content -->
         </div>
 </div>
+
+<div id="modal_ccf_group" class="modal fade" data-modal-index="2">
+        <div class="modal-dialog modal-lg" style="max-width: 55%">
+          <div class="modal-content bg-info">
+            <div class="modal-header">
+              <span class="modal-title">SELECCIONAR PACIENTE</span>              
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" style="background: white;color:black">
+              <div class="card-body p-0" style="margin:1px">
+                <table id="data_ventas_ccf_group" width="100%" class="table-hover table-bordered">
+                  <button class="btn btn-dark">IMPRIMIR CCF</button>
+                  <thead class="bg-secondary" style="text-align:center;font-size: 12px">
+                    <tr>
+                      <th>#Venta</th>          
+                      <th>Paciente</th>
+                      <th>Empresa</th>
+                      <th>Monto</th>
+                      <th>Agregar</th>
+                    </tr>
+                  </thead>
+                  <tbody style="text-align:center;font-size: 12px">                                  
+                  </tbody>
+                  <tfoot style="text-align: center">
+                    <th></th>
+                      <th></th>
+                      <th></th>
+                      <th>Monto</th>
+                      <th>$ <span id="monto_total_ccf_group"></span></th>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+</div>
+
 <!--FIN MODAL PACIENTES-->
 <?php require_once("footer.php");?>
 <?php date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y H:i:s");?>

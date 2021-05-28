@@ -39,6 +39,18 @@ where c.tipo_credito='Contado' and p.sucursal=? order by c.id_credito DESC;";
     return $resultado= $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //////////////////////LISTAR CREDITOS DE DESCUENTO EN PLANILLA
+    public function get_ventas_ccf_empresarial($empresa){
+    $conectar= parent::conexion();
+    $sql= "select c.numero_venta,p.nombres,p.empresas,c.monto,c.saldo,p.id_paciente,c.id_credito,v.evaluado
+        from creditos as c inner join pacientes as p on c.id_paciente=p.id_paciente inner join ventas as v on c.numero_venta=v.numero_venta
+        where p.empresas=? order by c.id_credito DESC;";
+    $sql=$conectar->prepare($sql);
+    $sql->bindValue(1,$empresa);
+    $sql->execute();
+    return $resultado= $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /////////////GET DATOS DE PACIENTE PARA MODAL GENERICA DE CREDITOS
     public function get_data_paciente_abonos($id_paciente,$id_credito,$numero_venta){
