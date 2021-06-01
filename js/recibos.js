@@ -24,16 +24,22 @@ function ocultar_btn_print_rec_ini(){
 }
 */
 function get_correlativo_recibo(){
+
   var sucursal_correlativo = $("#sucursal").val();
+  var id_usuario = $("#id_usuario").val();
+  let sucursal_usuario = $("#sucursal_usuario").val(); 
+
   $.ajax({
     url:"ajax/recibos.php?op=get_numero_recibo",
     method:"POST",
-    data:{sucursal_correlativo:sucursal_correlativo},
+    data:{sucursal_correlativo:sucursal_correlativo,sucursal_usuario:sucursal_usuario},
     cache:false,
     dataType:"json",
       success:function(data){
-      console.log(data); 
-      console.log("Este es el correlativo de REcibo"+data.correlativo)       
+      console.log(data);
+      if (sucursal_correlativo == 'Empresarial') {
+        $("#n_recibo").html(data.correlativo); 
+      }       
       $("#n_recibo").html(data.correlativo);             
       }
     })
@@ -61,7 +67,7 @@ function save_abono_inicial(){
 
     console.log("ProofV1")
     var pr_abono=$("#proxi_abono").val();
-
+   // let sucursal_usuario = $("#sucursal_usuario").val();
     var a_anteriores="0";
     var n_recibo = $("#n_recibo").html();
     var n_venta_recibo_ini =$("#n_venta_recibo_ini").val();
@@ -84,15 +90,14 @@ function save_abono_inicial(){
     var ar_rec_ini=$("#ar_rec_ini").val();
     var photo_rec_ini=$("#photo_rec_ini").val();
     var observaciones_rec_ini=$("#observaciones_rec_ini").val();
-    
+    let sucursal_usuario = $("#sucursal_usuario").val();
     var servicio_rec_ini=$("#servicio_rec_ini").val();    
     
-    if (forma_pago !="") {
-
+    if (forma_pago !=""){
     $.ajax({
     url:"ajax/recibos.php?op=registrar_recibo",
     method:"POST",
-    data:{a_anteriores:a_anteriores,n_recibo:n_recibo,n_venta_recibo_ini:n_venta_recibo_ini,monto:monto,fecha:fecha,sucursal:sucursal,id_paciente:id_paciente,id_usuario:id_usuario,telefono_ini:telefono_ini,recibi_rec_ini:recibi_rec_ini,empresa_ini:empresa_ini,texto:texto,numero:numero,saldo:saldo,forma_pago:forma_pago,marca_aro_ini:marca_aro_ini,modelo_aro_ini:modelo_aro_ini,color_aro_ini:color_aro_ini,lente_rec_ini:lente_rec_ini,ar_rec_ini:ar_rec_ini,photo_rec_ini:photo_rec_ini,observaciones_rec_ini:observaciones_rec_ini,pr_abono:pr_abono,servicio_rec_ini:servicio_rec_ini},
+    data:{a_anteriores:a_anteriores,n_recibo:n_recibo,n_venta_recibo_ini:n_venta_recibo_ini,monto:monto,fecha:fecha,sucursal:sucursal,id_paciente:id_paciente,id_usuario:id_usuario,telefono_ini:telefono_ini,recibi_rec_ini:recibi_rec_ini,empresa_ini:empresa_ini,texto:texto,numero:numero,saldo:saldo,forma_pago:forma_pago,marca_aro_ini:marca_aro_ini,modelo_aro_ini:modelo_aro_ini,color_aro_ini:color_aro_ini,lente_rec_ini:lente_rec_ini,ar_rec_ini:ar_rec_ini,photo_rec_ini:photo_rec_ini,observaciones_rec_ini:observaciones_rec_ini,pr_abono:pr_abono,servicio_rec_ini:servicio_rec_ini,sucursal_usuario:sucursal_usuario},
     cache: false,
     dataType:"json",
     error:function(x,y,z){

@@ -201,7 +201,6 @@ if (($fecha_ingr != $hoy) or ($fecha_ingr == $fecha_venta and $suma_res>1)){
   $sql17->bindValue(17,$sucursal);
   $sql17->bindValue(18,$sucursal);
   $sql17->bindValue(19,$tipo_ingreso);
-
   $sql17->execute();
 
   }elseif($fecha_ingr == $hoy and $suma_res==1){
@@ -218,9 +217,7 @@ if (($fecha_ingr != $hoy) or ($fecha_ingr == $fecha_venta and $suma_res>1)){
     $sql6->bindValue(6,$tipo_ingreso);
     $sql6->bindValue(7,$id_paciente);
     $sql6->bindValue(8,$n_venta_recibo_ini);
-    $sql6->execute();           
-           
-  
+    $sql6->execute();
   
   
   }

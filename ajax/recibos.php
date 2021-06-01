@@ -12,17 +12,50 @@ switch ($_GET["op"]) {
 
 
 ///////////////////////GET NUMERO RECIBO
-  case "get_numero_recibo":
-  $datos= $recibos->get_numero_recibo($_POST["sucursal_correlativo"]);
-  $sucursal = $_POST["sucursal_correlativo"];
-  $prefijo = "";
-  if ($sucursal=="Metrocentro") {
+case "get_numero_recibo":
+  
+  $sucursal_act = $_POST["sucursal_correlativo"];
+  $sucursal_usuario = $_POST["sucursal_usuario"];
+  
+  if ($sucursal_act == "Empresarial") {
+    $sucursal = $sucursal_act.'-'.$sucursal_usuario;
+  }else{
+    $sucursal = $sucursal_act;
+  }
+
+$datos= $recibos->get_numero_recibo($sucursal);
+ 
+ $prefijos_emp = "";
+ $prefijo = "";
+
+  if ($sucursal_act=="Empresarial" and $sucursal_usuario=="Metrocentro"){
+    $prefijos_emp = "EMT";
+  }elseif($sucursal_act=="Empresarial" and $sucursal_usuario=="San Miguel"){
+    $prefijos_emp = "ESM";
+  }elseif($sucursal_act=="Empresarial" and $sucursal_usuario=="Santa Ana"){
+    $prefijos_emp = "ESA";
+  }
+
+  if ($sucursal_act=="Metrocentro") {
     $prefijo="ME";
-  }elseif ($sucursal=="Santa Ana") {
+  }elseif ($sucursal_act=="Santa Ana") {
     $prefijo="SA";
-  }elseif ($sucursal=="San Miguel") {
+  }elseif ($sucursal_act=="San Miguel") {
     $prefijo="SM";
   }
+
+  if($sucursal_act=="Empresarial"){
+    if(is_array($datos)==true and count($datos)>0){
+    foreach($datos as $row){                  
+      $codigo=$row["numero_recibo"];
+      $cod=(substr($codigo,4,11))+1;
+      $output["correlativo"]=$prefijos_emp."-".$cod;
+    }             
+  }else{
+      $output["correlativo"] =$prefijos_emp."-1";
+  }
+
+  }else{
     if(is_array($datos)==true and count($datos)>0){
     foreach($datos as $row){                  
       $codigo=$row["numero_recibo"];
@@ -32,6 +65,7 @@ switch ($_GET["op"]) {
   }else{
       $output["correlativo"] = "R".$prefijo."-1";
   }
+}
 
    echo json_encode($output);
 
@@ -41,8 +75,16 @@ switch ($_GET["op"]) {
 
   $datos=$recibos->valida_existencia_nrecibo($_POST["n_recibo"]);
   if(is_array($datos)==true and count($datos)==0){
+    $sucursal_usuario = $_POST["sucursal_usuario"];
+    $sucursal_act = $_POST["sucursal"];
 
-    $recibos->agrega_detalle_abono($_POST['a_anteriores'],$_POST['n_recibo'],$_POST['n_venta_recibo_ini'],$_POST['monto'],$_POST['fecha'],$_POST['sucursal'],$_POST['id_paciente'],$_POST['id_usuario'],$_POST['telefono_ini'],$_POST['recibi_rec_ini'],$_POST['empresa_ini'],$_POST['texto'],$_POST['numero'],$_POST['saldo'],$_POST['forma_pago'],$_POST['marca_aro_ini'],$_POST['modelo_aro_ini'],$_POST['color_aro_ini'],$_POST['lente_rec_ini'],$_POST['ar_rec_ini'],$_POST['photo_rec_ini'],$_POST['observaciones_rec_ini'],$_POST['pr_abono'],$_POST['servicio_rec_ini']);
+    if ($sucursal_act=="Empresarial") {
+      $sucursal = "Empresarial-".$sucursal_usuario;
+    }else{
+      $sucursal = $_POST["sucursal"];
+    }
+
+    $recibos->agrega_detalle_abono($_POST['a_anteriores'],$_POST['n_recibo'],$_POST['n_venta_recibo_ini'],$_POST['monto'],$_POST['fecha'],$sucursal,$_POST['id_paciente'],$_POST['id_usuario'],$_POST['telefono_ini'],$_POST['recibi_rec_ini'],$_POST['empresa_ini'],$_POST['texto'],$_POST['numero'],$_POST['saldo'],$_POST['forma_pago'],$_POST['marca_aro_ini'],$_POST['modelo_aro_ini'],$_POST['color_aro_ini'],$_POST['lente_rec_ini'],$_POST['ar_rec_ini'],$_POST['photo_rec_ini'],$_POST['observaciones_rec_ini'],$_POST['pr_abono'],$_POST['servicio_rec_ini']);
       $messages[]="ok";
       
     }else{

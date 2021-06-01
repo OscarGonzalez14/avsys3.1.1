@@ -21,35 +21,39 @@
             </div>
             <div class="modal-body">
 
-              <div class="form-group row">
-                <div class="col-sm-2">
+              <div class="form-row">
+
+                <div class="col-sm-2" style="display: none">
                   <label>Cod.</label>
                   <input type="text" class="form-control" id="codigo_paciente" name="codigo_paciente" value="" >
                 </div>
 
-                <div class="col-sm-3">
+
+         
+                <div class="form-group col-sm-3" style="display: none;">
                   <label>Tipo Paciente</label>
-                  <select name="tipo_paciente" class="form-control" id="tipo_paciente">
-                    <option value="Sucursal" selected="true">Sucursal</option>
-                    <option value="Desc_planilla">Desc. Planilla</option>
-                    <option value="Cargo_a">Cargo A.</option>
-                    <option value="C_personal">Crédito Personal</option>                
-                  </select>         
+                   <select ng-model='discussionsSelect' class='form-control' id="tipo_paciente">
+                      <option value="Sucursal" selected>Sucursal</option>
+                      <option value="Desc_planilla">Desc. Planilla</option>
+                      <option value="Cargo_a">Cargo A.</option>
+                      <option value="C_personal">Crédito Personal</option> 
+                    </select>       
                 </div>
 
                 <div class="col-sm-7">
                   <label for="ex1">Nombre<span style="color:red">*</span></label>
                   <input class="form-control" id="nombres" name="nombres" type="text" placeholder="Escriba el Nombre del paciente"  required onkeyup="mayus(this);">      
                 </div>
-                
-                <div class="col-sm-3">
-                  <label for="ex2">Teléfono<span style="visibility: hidden;color: red" id="label_telefono">*</span></label>
-                  <input class="form-control" id="telefono" type="text" name="telefono" required pattern='^[0-9]+'>
-                </div>
+
 
                 <div class="col-sm-2">
                   <label for="ex3">Edad</label>
                   <input class="form-control" id="edad" type="number" name="edad" placeholder="edad" required pattern='^[0-9]+'>
+                </div>
+                
+                <div class="col-sm-3">
+                  <label for="ex2">Teléfono<span style="visibility: hidden;color: red" id="label_telefono">*</span></label>
+                  <input class="form-control" id="telefono" type="text" name="telefono" required pattern='^[0-9]+'>
                 </div>
 
                 <div class="col-sm-3">
@@ -62,7 +66,7 @@
                   <input class="form-control" id="correo" type="text" name="correo" placeholder="correo del paciente" required>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4" style="display: none">
                 <label for="inputPassword4">Empresa</label>
                 <select class="form-control input-dark" id="empresa_paciente" required>
                   <option value="">Seleccionar...</option>
@@ -73,18 +77,18 @@
                 </select>
               </div>
 
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-5" style="display: none">
                   <label for="inputPassword4">Departamento</label>
                   <select class="form-control input-dark" id="departamento_paciente" required>
                 </select>
                </div>
 
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-3" style="display: none">
              <label for="inputEmail4">#Cod. Empleado</label>
               <input type="text" class="form-control input-dark" id="codigo_emp" placeholder="Código de empleado" required="" onkeyup="mayus(this);" >
               </div> 
 
-              <div class="col-sm-3">
+              <div class="col-sm-3" style="display: none">
                   <label for="ex3">Ocupación</label>
                   <input class="form-control" id="ocupacion" type="text" name="ocupacion" placeholder="ocupacion del paciente" onkeyup="mayus(this);" required>
               </div>

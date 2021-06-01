@@ -6,7 +6,7 @@ require_once("header_dos.php");
 require_once("modals/modal_abonos.php");
 require_once("modals/modal_detalle_abonos.php");
 require_once("modals/modal_correlativo_factura.php");
-require_once("modals/modal_ccf_generica.php");
+
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -21,7 +21,7 @@ require_once("modals/modal_ccf_generica.php");
               <li class="breadcrumb-item"><a href="creditos.php" style="color:black">Créditos</a></li>
               <li class="breadcrumb-item active"><a>Contado</a></li>
               <li class="breadcrumb-item"><a href="creditos_oid.php">Desc. Planilla</a></li>
-              <li class="breadcrumb-item"><a href="creditos_cautomaticos.php">Cargo Auto</a></li>
+              <li class="breadcrumb-item"><a href="creditos_contado.php">Cargo Auto</a></li>
               <li class="breadcrumb-item"><a href="creditos_mora.php">Créditos en mora</a></li>
             </ol>
           </div>
@@ -49,8 +49,7 @@ require_once("modals/modal_ccf_generica.php");
         <th style='text-align: center;'>Saldo</th>
         <th style='text-align: center;'>Abonar</th>
         <th style='text-align: center;'>Historial</th>
-        <th style='text-align: center;'>Fac.</th>
-        <th style='text-align: center;'>CCF.</th>
+        <th style='text-align: center;'>Factura</th>
        </tr>
      </thead>
      <tbody style="text-align: center;font-family: Helvetica, Arial, sans-serif;font-size: 11px;">
@@ -64,6 +63,7 @@ require_once("modals/modal_ccf_generica.php");
 <?php date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y H:i:s");?>
 <input type="hidden" name="usuario" id="usuario" value="<?php echo $_SESSION["id_usuario"];?>"/>
 <input type="hidden" name="sucursal" id="sucursal" value="<?php echo $_SESSION["sucursal"];?>"/>
+<input type="hidden" name="sucursal_usuario" id="sucursal_usuario" value="<?php echo $_SESSION["sucursal_usuario"];?>"/>
 <input type="hidden" id="fecha" value="<?php echo $hoy;?>">
 <input type="hidden" id="name_pag" value="COBROS DE CONTADO">
 <input type="hidden" id="id_consulta">
@@ -75,8 +75,6 @@ require_once("modals/modal_ccf_generica.php");
 <script type="text/javascript" src="js/creditos.js"></script>
 <script type="text/javascript" src="js/bootbox.min.js"></script>
 <script type="text/javascript" src="js/recibos.js"></script>
-<script type="text/javascript" src="js/reporteria.js"></script>
-
 
   <script type="text/javascript">
     var title = document.getElementById("name_pag").value;

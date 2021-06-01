@@ -85,11 +85,18 @@ public function agrega_detalle_venta(){
   $tipo_venta = $_POST["tipo_venta"];
   $id_usuario = $_POST["id_usuario"];
   $id_paciente = $_POST["id_paciente"];
-  $sucursal = $_POST["sucursal"];
+  $sucursal_act = $_POST["sucursal"];
+  $sucursal_user = $_POST["sucursal_usuario"];
   $evaluado = $_POST["evaluado"];
   $optometra = $_POST["optometra"];
   $plazo = $_POST["plazo"];
-  $id_ref = $_POST["id_ref"];  
+  $id_ref = $_POST["id_ref"];
+
+  if ($sucursal_act=="Empresarial") {
+    $sucursal = "Empresarial-".$sucursal_user;
+  }else{
+    $sucursal = $sucursal_act;
+  }
 
   $str = '';
   $detalles = array();
@@ -130,8 +137,6 @@ public function agrega_detalle_venta(){
           $descripcion = "TRATAMIENTOS: ".$item["desc_producto"];
         }elseif($cat_prod=="accesorios"){
           $descripcion = "ACC: ".$item["desc_producto"];
-        }elseif($cat_prod=="servicio"){
-          $descripcion = "Servicios: ".$item["desc_producto"];
         }
       }
 
@@ -234,6 +239,9 @@ public function agrega_detalle_venta(){
   }
 
 #################  REGISTRAR VENTA EN CORTE DIARIO #####################
+    if ($sucursal =="Empresarial") {
+            
+    }
 
     $n_recibo="";
     $n_factura="";

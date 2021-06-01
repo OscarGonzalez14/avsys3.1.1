@@ -88,6 +88,7 @@ require_once("modals/modal_consultas.php");
 <?php date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y H:i:s");?>
 <input type="hidden" name="id_usuario" id="usuario" value="<?php echo $_SESSION["usuario"];?>"/>
 <input type="hidden" name="sucursal" id="sucursal" value="<?php echo $_SESSION["sucursal"];?>"/>
+<input type="hidden" name="sucursal_usuario" id="sucursal_usuario" value="<?php echo $_SESSION["sucursal_usuario"];?>"/>
 <input type="hidden" id="fecha" value="<?php echo $hoy;?>">
 <input type="hidden" id="name_pag" value="MODULO PACIENTES & CONSULTAS">
 

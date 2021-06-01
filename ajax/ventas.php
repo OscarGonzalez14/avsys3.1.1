@@ -25,9 +25,8 @@ switch($_GET["op"]){
     }      
 
   } else {                 
-                 //si no existe el registro entonces no recorre el array
+    //si no existe el registro entonces no recorre el array
     $output["error"]="El producto seleccionado está inactivo, intenta con otro";
-
   }
 
   echo json_encode($output);
@@ -37,8 +36,7 @@ switch($_GET["op"]){
   case "agregar_accesorios_venta":          
   $datos=$ventas->buscar_accesorios_ventas($_POST["id_producto"],$_POST["id_ingreso"]);
   if(is_array($datos)==true and count($datos)>0){
-    foreach($datos as $row)
-    {
+    foreach($datos as $row){
       $output["desc_producto"] = $row["desc_producto"];
       $output["precio_venta"] = number_format($row["precio_venta"],2,".",",");
       $output["stock"] = $row["stock"];
@@ -47,7 +45,7 @@ switch($_GET["op"]){
       $output["id_producto"] = $row["id_producto"];
       $output["id_ingreso"] = $row["id_ingreso"];
       $output["categoria_producto"] = $row["categoria_producto"];                   
-    }      
+    }   
 
   } else {                 
                  //si no existe el registro entonces no recorre el array
@@ -100,17 +98,51 @@ break;
 
 ///////////////////////GET MUMERO VENTA
 case "get_numero_venta":
-$datos= $ventas->get_numero_venta($_POST["sucursal_correlativo"]);
-$sucursal = $_POST["sucursal_correlativo"];
+
+$sucursal_act = $_POST["sucursal_correlativo"];
+$sucursal_usuario = $_POST["sucursal_usuario"];
+
+if ($sucursal_act == "Empresarial") {
+  $sucursal = "Empresarial".'-'.$sucursal_usuario;
+}else{
+  $sucursal = $sucursal_act;
+}
+
+$datos= $ventas->get_numero_venta($sucursal);
+
+$prefijos_emp = "";
 $prefijo = "";
+
+if ($sucursal_act=="Empresarial" and $sucursal_usuario=="Metrocentro"){
+  $prefijos_emp = "EVME";
+}elseif($sucursal_act=="Empresarial" and $sucursal_usuario=="San Miguel"){
+  $prefijos_emp = "EVSM";
+}elseif($sucursal_act=="Empresarial" and $sucursal_usuario=="Santa Ana"){
+  $prefijos_emp = "EVSA";
+}
+
 if ($sucursal=="Metrocentro") {
   $prefijo="ME";
 }elseif ($sucursal=="Santa Ana") {
   $prefijo="SA";
 }elseif ($sucursal=="San Miguel") {
   $prefijo="SM";
+}elseif ($sucursal=="Empresarial") {
+  $prefijo="EM";
 }
-if(is_array($datos)==true and count($datos)>0){
+
+if ($sucursal_act=="Empresarial") {
+  if(is_array($datos)==true and count($datos)>0){
+    foreach($datos as $row){                  
+      $codigo=$row["numero_venta"];
+      $cod=(substr($codigo,5,11))+1;
+      $output["correlativo"]=$prefijos_emp."-".$cod;
+    }             
+  }else{
+      $output["correlativo"] =$prefijos_emp."-1";
+  }
+}else{
+  if(is_array($datos)==true and count($datos)>0){
   foreach($datos as $row){                  
     $codigo=$row["numero_venta"];
     $cod=(substr($codigo,5,11))+1;
@@ -119,6 +151,9 @@ if(is_array($datos)==true and count($datos)>0){
 }else{
   $output["correlativo"] = "AV".$prefijo."-1";
 }
+}
+
+
 
 echo json_encode($output);
 

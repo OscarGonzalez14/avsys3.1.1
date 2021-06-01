@@ -38,7 +38,10 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
 
 <style type="text/css">
-<?php $cat_user = $_SESSION["categoria"];?>
+<?php $cat_user = $_SESSION["categoria"];
+    $sucursal_act = $_SESSION["sucursal"]; 
+?>
+
 </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -110,6 +113,18 @@
 
             </ul>
           </li>
+
+          <?php 
+          if ($sucursal_act=="Empresarial"){
+            echo ' 
+              <li class="nav-item">
+                <a href="empresarial.php" class="nav-link">
+                  <i class="fa fa-tasks" aria-hidden="true"></i> <span>Empresarial</span>
+                </a>         
+            </li>';
+          } 
+         
+          ?>
           <li class="nav-item">
             <a href="empresas.php" class="nav-link">
               <i class="nav-icon fas fa-building"></i>

@@ -478,4 +478,3 @@ $dompdf->stream('document', array('Attachment'=>'0'));
 
      header("Location: index.php");
   }?>
-  

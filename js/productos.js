@@ -463,7 +463,15 @@ function listar_acc_compras()
 
 ////////////////LISTAR AROS EN VENTAS
 $(document).on("click","#btn_aros_venta", function(){
-  var sucursal= $("#sucursal").val();
+
+  var sucursal_v = $("#sucursal").val();
+  var sucursal_usuario = $("#sucursal_usuario").val();
+  var sucursal = '';
+  if (sucursal_v == "Empresarial") {
+    sucursal = sucursal_usuario
+  }else{
+    sucursal = sucursal_v;
+  }
 
   tabla_aros_venta = $('#lista_aros_ventas_data').DataTable({      
     "aProcessing": true,//Activamos el procesamiento del datatables

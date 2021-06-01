@@ -10,13 +10,15 @@
   $datos= $pacientes->get_numero_paciente($_POST["sucursal_correlativo"]);
 	$sucursal = $_POST["sucursal_correlativo"];
 	$prefijo = "";
-	if ($sucursal=="Metrocentro") {
+	if ($sucursal=="Metrocentro"){
 		$prefijo="ME";
-	}elseif ($sucursal=="Santa Ana") {
+	}elseif ($sucursal=="Santa Ana"){
 		$prefijo="SA";
-	}elseif ($sucursal=="San Miguel") {
+	}elseif ($sucursal=="San Miguel"){
 		$prefijo="SM";
-	}
+	}elseif($sucursal=="Empresarial"){
+    $prefijo="EM";
+  }
     if(is_array($datos)==true and count($datos)>0){
 		foreach($datos as $row){			  					
 			$codigo=$row["codigo"];
@@ -38,7 +40,7 @@
     $dui=$pacientes->validar_dui_paciente($_POST["dui"]);
     $valida_pacientes = $pacientes->valida_paciente($_POST["codigo_paciente"]);
 
-    if (is_array($valida_pacientes)==true and count($valida_pacientes)==0 ){ //Si existe Paciente(validacion)
+    if (is_array($valida_pacientes)==true and count($valida_pacientes)==0 ){//Si existe Paciente(validacion)
      
     if($tipo_paciente=="Desc_planilla" || $tipo_paciente=="Cargo_a") {
       if(is_array($codigo)==true and count($codigo)==0 and is_array($dui)==true and count($dui)==0){

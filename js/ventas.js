@@ -48,13 +48,14 @@ $(document).ready(function(){
 });
 
 
-
 function get_correlativo_venta(){
-  var sucursal_correlativo = $("#sucursal").val();
+  let sucursal_correlativo = $("#sucursal").val();
+  let sucursal_usuario = $("#sucursal_usuario").val();
+
   $.ajax({
     url:"ajax/ventas.php?op=get_numero_venta",
     method:"POST",
-    data:{sucursal_correlativo:sucursal_correlativo},
+    data:{sucursal_correlativo:sucursal_correlativo,sucursal_usuario:sucursal_usuario},
     cache:false,
     dataType:"json",
       success:function(data){
@@ -114,14 +115,14 @@ function agregarServicioVenta(id_producto){
       precio_venta  : data.precio_venta,
       subtotal : 0,
       descuento : 0,
-      categoria_prod : "Servicio",
+      categoria_prod : data.categoria_producto,
       cantidad : 1,
       codProd  : id_producto,
       categoria_ub  : "",
       precio_venta  : data.precio_venta,
       subtotal : 0,
       descuento : 0,
-      //categoria_prod : data.categoria_producto
+      categoria_prod : data.categoria_producto
     };//Fin objeto
     detalles.push(obj);
     listarDetallesVentas();
@@ -893,8 +894,8 @@ function get_correlativo_orden(){
 
 function registrarVenta(){
 
-  var fecha_venta = $("#fecha").val();
-  
+  let sucursal_usuario = $("#sucursal_usuario").val();
+  var fecha_venta = $("#fecha").val();  
   var numero_venta = $("#n_venta").val();
   var paciente = $("#titular_cuenta").val();
   var vendedor = $("#usuario").val();
@@ -903,7 +904,7 @@ function registrarVenta(){
   var tipo_venta = $("#tipo_venta").val();
   var id_usuario = $("#usuario").val();
   var id_paciente = $("#id_paciente").val();
-  var sucursal = $("#sucursal").val();
+  var sucursal = $("#sucursal").val();  
   var evaluado = $("#evaluado").val();
   var optometra = $("#optometra").val();
   var plazo = $("#plazo").val();
@@ -934,7 +935,7 @@ if (paciente !="" && tipo_pago !=""  && tipo_venta !="") {
     $.ajax({
     url:"ajax/ventas.php?op=registrar_venta",
     method:"POST",
-    data:{'arrayVenta':JSON.stringify(detalles),'arrayOid':JSON.stringify(data_oid),'fecha_venta':fecha_venta,'numero_venta':numero_venta,'paciente':paciente,'vendedor':vendedor,'monto_total':monto_total,'tipo_pago':tipo_pago,'tipo_venta':tipo_venta,'id_usuario':id_usuario,'id_paciente':id_paciente,'sucursal':sucursal,'evaluado':evaluado,'optometra':optometra,'plazo':plazo,"id_ref":id_ref},
+    data:{'arrayVenta':JSON.stringify(detalles),'arrayOid':JSON.stringify(data_oid),'fecha_venta':fecha_venta,'numero_venta':numero_venta,'paciente':paciente,'vendedor':vendedor,'monto_total':monto_total,'tipo_pago':tipo_pago,'tipo_venta':tipo_venta,'id_usuario':id_usuario,'id_paciente':id_paciente,'sucursal':sucursal,'evaluado':evaluado,'optometra':optometra,'plazo':plazo,"id_ref":id_ref,"sucursal_usuario":sucursal_usuario},
     cache: false,
     dataType:"json",
     error:function(x,y,z){

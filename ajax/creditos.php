@@ -33,7 +33,6 @@ switch ($_GET["op"]){
     $class="";
     $href="";
     $event = "";
-    $event_ccf ='';
 
     if($row["saldo"] == 0){
         $icon="fas fa-print";
@@ -41,14 +40,12 @@ switch ($_GET["op"]){
         $txt = '';
         $href='imprimir_factura_pdf.php?n_venta='.$row['numero_venta'].'&id_paciente='.$row['id_paciente'].'';
         $event = 'print_invoices';
-        $event_ccf ='emitir_ccf';
     }elseif ($row["saldo"] > 0) {
         $icon=" fas fa-clock";
         $atrib = "btn btn-secondary";
         $txt = '';
         $href='#';
         $event = "";
-        $event_ccf ='';
     }
 
     $sub_array[] = $row["numero_venta"];
@@ -58,8 +55,7 @@ switch ($_GET["op"]){
     $sub_array[] = "$".number_format($row["saldo"],2,".",",");
     $sub_array[] = '<button type="button" onClick="realizarAbonos('.$row["id_paciente"].','.$row["id_credito"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-sm bg-warning" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus" aria-hidden="true" style="color:white"></i></button>';
      $sub_array[] = '<button type="button" onClick="verDetAbonos('.$row["id_paciente"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-md bg-success btn-sm"><i class="fas fa-file-invoice-dollar" aria-hidden="true" style="color:white"></i></button>';
-    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>';
-    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event_ccf.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\',\''.$row["nombres"].'\');" ><i class="'.$icon.'"></i>'.$txt.'</button>'; 
+    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>'; 
     $data[] = $sub_array;
   }
 
@@ -142,7 +138,7 @@ switch ($_GET["op"]){
     if($row["saldo"] == 0){
         $icon="fas fa-print";
         $atrib = "btn btn-info";
-        $txt = '';
+        $txt = 'CANC.';
         $href='imprimir_factura_pdf.php?n_venta='.$row['numero_venta'].'&id_paciente='.$row['id_paciente'].'';
         $event = 'print_invoices';
     }elseif ($row["saldo"] > 0) {
@@ -160,9 +156,9 @@ switch ($_GET["op"]){
     $sub_array[] = "$".number_format($row["monto"],2,".",","); 
     $sub_array[] = "$".number_format($row["saldo"],2,".",",");    
 
-    $sub_array[] = '<button type="button" onClick="realizarAbonos('.$row["id_paciente"].','.$row["id_credito"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-xs bg-warning" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus" aria-hidden="true" style="color:white"></i></button>';
-     $sub_array[] = '<button type="button" onClick="verDetAbonos('.$row["id_paciente"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-xs bg-success"><i class="fas fa-file-invoice-dollar" aria-hidden="true" style="color:white"></i></button>';
-    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-xs" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>';           
+    $sub_array[] = '<button type="button" onClick="realizarAbonos('.$row["id_paciente"].','.$row["id_credito"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-md bg-warning" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus" aria-hidden="true" style="color:white"></i></button>';
+     $sub_array[] = '<button type="button" onClick="verDetAbonos('.$row["id_paciente"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-md bg-success"><i class="fas fa-file-invoice-dollar" aria-hidden="true" style="color:white"></i></button>';
+    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-md" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>';           
                                                 
     $data[] = $sub_array;
   }
@@ -174,30 +170,6 @@ switch ($_GET["op"]){
       "aaData"=>$data);
     echo json_encode($results);
   break;
-
-
-  case 'listar_cobros_grupal_ccf':
-    $datos=$creditos->get_ventas_ccf_empresarial($_POST["empresa"]);
-    $data= Array();
-    $i=0;
-    foreach($datos as $row){
-    $sub_array = array();
-    $sub_array[] = $row["numero_venta"];
-    $sub_array[] = $row["nombres"];
-    $sub_array[] = $row["empresas"];   
-    $sub_array[] = "$".number_format($row["monto"],2,".",",");
-    $sub_array[] ='<input type="checkbox" class="form-check-input add_item_ccf" id="item_ccf'.$i.'" value="'.$row["monto"].'" name="'.$row["numero_venta"].'">Sel.';
-    $data[] = $sub_array;
-    $i++;
-    }
-
-    $results = array(
-      "sEcho"=>1, //Información para el datatables
-      "iTotalRecords"=>count($data), //enviamos el total registros al datatable
-      "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
-      "aaData"=>$data);
-    echo json_encode($results);
-    break;
 
   ////////////////GET DATOS DE PACIENTE PARA MODAL ABONOS
   case 'datos_paciente_abono':

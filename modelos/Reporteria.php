@@ -29,13 +29,13 @@ public function print_recibo_paciente($n_recibo,$n_venta,$id_paciente){
 }
 
 /////////GET DATOS DESCRIPCION DE PRODUCTOS FACTURA
-public function get_datos_factura($n_venta_cf,$id_paciente_cf){
+public function get_datos_factura($n_venta,$id_paciente){
 	$conectar= parent::conexion();
 	parent::set_names();
 	$sql="select producto from detalle_ventas where numero_venta=? and id_paciente=? order by id_detalle_ventas ASC;";
 	$sql=$conectar->prepare($sql);
-	$sql->bindValue(1,$n_venta_cf);
-       $sql->bindValue(2,$id_paciente_cf);
+	$sql->bindValue(1,$n_venta);
+       $sql->bindValue(2,$id_paciente);
 	$sql->execute();
 	return $resultado= $sql->fetchAll(PDO::FETCH_ASSOC);
 }

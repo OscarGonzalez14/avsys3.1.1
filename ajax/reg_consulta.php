@@ -118,6 +118,7 @@ $statement->bindParam(35,$odcilindrosf,PDO::PARAM_STR );
 $statement->bindParam(36,$odejesf,PDO::PARAM_STR );
 $statement->bindParam(37,$dprismaf,PDO::PARAM_STR );
 $statement->bindParam(38,$oddicionf,PDO::PARAM_STR );
+
 $statement->bindParam(39,$odavsclejos,PDO::PARAM_STR );
 $statement->bindParam(40,$odavphlejos,PDO::PARAM_STR );
 $statement->bindParam(41,$odavcclejos,PDO::PARAM_STR );

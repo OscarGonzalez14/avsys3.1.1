@@ -174,110 +174,25 @@ function listar_creditos_cauto(){
        }).DataTable();
 }
 
-
-/////////////RELLENAR LA EMPRESA DE PACIENTE EMPRESARIAL
-function agregar_empresa_pac(id_empresa){      
-$.ajax({
-  url:"ajax/empresas.php?op=buscar_empresa_paciente",
-  method:"POST",
-  data:{id_empresa:id_empresa},
-  dataType:"json",
-  success:function(data){                       
-    $('#empresasModal').modal('hide');    
-    $('#empresa').val(data.nombre);
-    setTimeout ("listar_creditos_oid();",1500); 
-  }
-})
-
-}
-
-function listar_ventas_ccf(){
-  array_total_ccf = [];
-  totalFinalCcf = 0;
-
-  let empresa = $("#empresa").val();
-  if(empresa==""){
-    Swal.fire('Error!, Debe Seleccionar una empresa','','error');
-    return false
-  }
-  $("#modal_ccf_group").modal('show');
-  $("#data_ventas_ccf_group").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "aProcessing": true,//Activamos el procesamiento del datatables
-      "aServerSide": true,//Paginación y filtrado realizados por el servidor   
-      //dom: 'Bfrti',
-      //"buttons": [ "excel"],
-      "searching": true,
-      "ajax":
-        {
-          url: 'ajax/creditos.php?op=listar_cobros_grupal_ccf',
-          type : "post",
-          dataType : "json",
-          data:{empresa:empresa},       
-          error: function(e){
-            console.log(e.responseText);  
-          }
-        },
-      "bDestroy": true,
-      "responsive": true,
-      "bInfo":true,
-      "iDisplayLength": 15,//Por cada 10 registros hace una paginación
-      "order": [[ 0, "desc" ]],//Ordenar (columna,orden)
-
-      "language": {
-
-        "sProcessing":     "Procesando...",
-
-        "sLengthMenu":     "Mostrar _MENU_ registros",
-
-        "sZeroRecords":    "No se encontraron resultados",
-
-        "sEmptyTable":     "Ningún dato disponible en esta tabla",
-
-        "sInfo":           "Mostrando un total de _TOTAL_ registros",
-
-        "sInfoEmpty":      "Mostrando un total de 0 registros",
-
-        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-
-        "sInfoPostFix":    "",
-
-        "sSearch":         "Buscar:",
-
-        "sUrl":            "",
-
-        "sInfoThousands":  ",",
-
-        "sLoadingRecords": "Cargando...",
-
-        "oPaginate": {
-
-          "sFirst":    "Primero",
-
-          "sLast":     "Último",
-
-          "sNext":     "Siguiente",
-
-          "sPrevious": "Anterior"
-
-        },
-
-        "oAria": {
-
-          "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-
-          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-
-        }
-
-         }//cerrando language
-    }).buttons().container().appendTo('#data_ventas_ccf_group_wrapper .col-md-6:eq(0)');
-}
-
-///////////////LISTAR CREDITOS DESCUENTO EN PLANILLA
 function listar_creditos_oid(){
-  var sucursal= $("#sucursal").val();
-  let empresa= $("#empresa").val();
+  setTimeout("listar_creditos_oids();",1500);
+}
+
+function listar_creditos_oids(){
+   var sucursal= $("#sucursal").val();
+   var empresa= $("#empresa").val();
+
+  var sucursal_usuario = $("#sucursal_usuario").val();
+  if (sucursal=="Empresarial") {
+     sucursal = sucursal_usuario;
+     console.log(sucursal);
+     listar_creditos_oids(sucursal,empresa);
+  }else{
+     listar_creditos_oids(sucursal,empresa);
+  }
+}
+///////////////LISTAR CREDITOS DESCUENTO EN PLANILLA
+function listar_creditos_oids(sucursal,empresa){
 
   tabla_creditos_oid=$('#creditos_oid').dataTable(
   {
@@ -458,7 +373,6 @@ function realizarAbonos(id_paciente,id_credito,numero_venta){
 ////////////////REGISTRAR ABONO
 function registra_abonos(){
 
-  console.log("ProoofV2")
   var fecha_rec_ini=$("#pr_abono").val();
   var saldo=$("#saldo").val();
   var monto = $("#numero").val();
@@ -478,7 +392,7 @@ function registra_abonos(){
 }
 
 function registrar_abono(){
-
+  let sucursal_usuario = $("#sucursal_usuario").val();
   var a_anteriores=$("#abono_ant").val();
   var n_recibo = $("#n_recibo").html();
   var n_venta_recibo_ini =$("#n_venta_recibo_ini").val();
@@ -509,7 +423,7 @@ function registrar_abono(){
     $.ajax({
       url:"ajax/recibos.php?op=registrar_recibo",
       method:"POST",
-      data:{a_anteriores:a_anteriores,n_recibo:n_recibo,n_venta_recibo_ini:n_venta_recibo_ini,monto:monto,fecha:fecha,sucursal:sucursal,id_paciente:id_paciente,id_usuario:id_usuario,telefono_ini:telefono_ini,recibi_rec_ini:recibi_rec_ini,empresa_ini:empresa_ini,texto:texto,numero:numero,saldo:saldo,forma_pago:forma_pago,marca_aro_ini:marca_aro_ini,modelo_aro_ini:modelo_aro_ini,color_aro_ini:color_aro_ini,lente_rec_ini:lente_rec_ini,ar_rec_ini:ar_rec_ini,photo_rec_ini:photo_rec_ini,observaciones_rec_ini:observaciones_rec_ini,pr_abono:pr_abono,servicio_rec_ini:servicio_rec_ini},
+      data:{a_anteriores:a_anteriores,n_recibo:n_recibo,n_venta_recibo_ini:n_venta_recibo_ini,monto:monto,fecha:fecha,sucursal:sucursal,id_paciente:id_paciente,id_usuario:id_usuario,telefono_ini:telefono_ini,recibi_rec_ini:recibi_rec_ini,empresa_ini:empresa_ini,texto:texto,numero:numero,saldo:saldo,forma_pago:forma_pago,marca_aro_ini:marca_aro_ini,modelo_aro_ini:modelo_aro_ini,color_aro_ini:color_aro_ini,lente_rec_ini:lente_rec_ini,ar_rec_ini:ar_rec_ini,photo_rec_ini:photo_rec_ini,observaciones_rec_ini:observaciones_rec_ini,pr_abono:pr_abono,servicio_rec_ini:servicio_rec_ini,sucursal_usuario:sucursal_usuario},
       cache: false,
       dataType:"json",
       error:function(x,y,z){
@@ -795,8 +709,7 @@ function print_facturas_ventas(){
 function print_invoices(id_paciente,numero_venta){
  // console.log(numero_venta);return false;
  var sucursal = $("#sucursal").val();
- var id_usuario = $("#usuario").val();
- var fecha_fac = $("#fecha_facturacion").val();
+ var id_usuario = $("#usuario").val(); 
  $("#id_paciente_venta_factura").val(id_paciente);
  $("#print_invoices").modal("show");
  $("#n_venta_factura").val(numero_venta);
@@ -809,11 +722,9 @@ function print_invoices(id_paciente,numero_venta){
   dataType:"json",
   success:function(data){ 
     console.log(data);
-
     $("#correlativo_factura").html(data.correlativo);
     var correlativo_f = data.correlativo;
-    console.log(correlativo_f);
-    document.getElementById("link_invoice_print").href='imprimir_factura_pdf.php?n_venta='+numero_venta+'&'+'id_paciente='+id_paciente+'&'+'correlativo_f='+correlativo_f+'&'+'fecha_fac='+fecha_fac;
+    document.getElementById("link_invoice_print").href='imprimir_factura_pdf.php?n_venta='+numero_venta+'&'+'id_paciente='+id_paciente+'&'+'correlativo_f='+correlativo_f;
   }
 })
 
@@ -838,11 +749,9 @@ function registrar_impresion(){
     cache:false,
     dataType:"json",
     success:function(data){ 
-      console.log(data);  
-
+    console.log(data);
     }
   })
-
 }
 
 ///////////////REGISTRAR ORDEN DE DESCUENTO //////////////
@@ -1492,41 +1401,6 @@ function eliminar_oid(id_orden, numero_orden, id_paciente){
   }else if (cat_user=="optometra","asesor") {
       setTimeout ("Swal.fire('No posse permisos para eliminar OID','','error')", 100);
     }
-}
-
-/////////////////////////agregar item a credito fiscal //////////////
-let array_total_ccf = [];
-
-$(document).on('click', '.add_item_ccf', function(){
-
-  let id_item = $(this).attr("id");
-  let monto_item = $(this).attr("value");
-  let n_venta = $(this).attr("name");
-  
-  let chk = document.getElementById(id_item);
-  let status_chk = chk.checked;
-
-  if (status_chk==true) {
-    let obj ={
-      monto_venta : monto_item,
-      numero_venta : n_venta
-    }
-    array_total_ccf.push(obj);
-    calcularMontoCcf();
-  }else if(status_chk==false){
-    let index_obj = array_total_ccf.findIndex(x => x.numero_venta==n_venta);
-    array_total_ccf.splice(index_obj, 1);
-    calcularMontoCcf();
-  }
-
-});
-
-function calcularMontoCcf(){
-  let totalFinalCcf = 0;
-  for(let i=0; i<array_total_ccf.length;i++){
-    totalFinalCcf += parseFloat(array_total_ccf[i].monto_venta)
-  }
-  $("#monto_total_ccf_group").html(totalFinalCcf.toFixed(2));
 }
 
 init();

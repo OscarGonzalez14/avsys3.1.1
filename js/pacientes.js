@@ -25,7 +25,7 @@ function show_btn_guardar(){
   document.getElementById("save_paciente").style.display = "block";
 }
 
-$(document).on('click', '#tipo_paciente', function(){ 
+/*$(document).on('click', '#tipo_paciente', function(){ 
  var tipo_paciente=$(this).val();
  //console.log(tipo_paciente);
  if (tipo_paciente=="Desc_planilla"){
@@ -63,7 +63,7 @@ $(document).on('click', '#tipo_paciente', function(){
  	//ocultar_btns_creditos();
  }
 });
-
+*/
 function get_correlativo_paciente(){
 	var sucursal_correlativo = $("#sucursal").val();
 	$.ajax({
@@ -95,7 +95,7 @@ function guardarPaciente(){
 	var nit = $("#nit").val();
 	var tel_oficina = $("#tel_oficina").val();
 	var direccion_completa = $("#direccion_completa").val();
-	var tipo_paciente = $("#tipo_paciente").val();
+	let tipo_paciente = $("#tipo_paciente").val();
 
 	if (tipo_paciente=="Desc_planilla") {
 		if (tel_oficina == "" || empresa == "" || dui == "" || telefono=="" || empresa=="") {
@@ -153,9 +153,6 @@ function save_paciente() {
     var  departamento = $("#departamento_paciente").val();
 
 
-    //empresa_paciente:empresa_paciente,codigo_emp:codigo_emp,departamento:departamento
-
-
 	if(edad !=""){
     $.ajax({
     url:"ajax/pacientes.php?op=guardar_paciente",
@@ -174,7 +171,9 @@ function save_paciente() {
 
   if(data=='ok'){
     setTimeout ("Swal.fire('Paciente guardado Existosamente','','success')", 100);
-    setTimeout ("explode();", 2000); 
+    //setTimeout ("explode();", 2000);
+    $('#data_pacientes').DataTable().ajax.reload();
+    $('#newPaciente').modal('hide'); 
   }else if(data=='codigo'){
     setTimeout ("Swal.fire('Error al guardar el paciente Intente nuevamente','','error')", 100);
     return false;
@@ -183,7 +182,9 @@ function save_paciente() {
     return false;           
  }else if(data="editado"){
 	setTimeout ("Swal.fire('Guardado Existosamente','','success')", 100);
-    setTimeout ("explode();", 2000); 
+    //setTimeout ("explode();", 2000);
+    $('#data_pacientes').DataTable().ajax.reload();
+    $('#newPaciente').modal('hide');
 }
 }
 });
@@ -388,7 +389,7 @@ function clear_campos(){
 	$('#nit').val("");
 	$('#tel_oficina').val("");
 	$('#direccion_completa').val("");
-	$('#tipo_paciente').val("");
+	//$('#tipo_paciente').val("");
 }
 
 ///////////
