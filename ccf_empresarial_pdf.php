@@ -3,18 +3,17 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 require_once 'dompdf/autoload.inc.php';
-require_once 'helpers/converText.php';
-require_once("modelos/Reporteria.php");
-$reporteria=new Reporteria();
-
-$id_paciente_cf =$_POST["id_paciente_ccf"];
-$n_venta_cf =$_POST["n_venta_cf"];
+require_once 'pages/convierte_a_texto.php';
+$empresa = $_POST["empresa_cff"];
 $direccion = $_POST["direcion_ccf"];
 $registro_ccf = $_POST["registro_ccf"];
 $direcion_ccf = $_POST["direcion_ccf"];
 $giro_ccf = $_POST["giro_ccf"];
+$items = $_POST["items_ccf_det"];
 $nit =$_POST["nit_ccf"];
-$cliente_ccf = $_POST["cliente_ccf"];
+$monto = $_POST["monto_ccf_det"];
+$total_items = $_POST["items_lengt"];
+date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y");
 
 if (isset($_POST["contribuyente_tipo"])) {
    $tipo_contribuyente=1;
@@ -22,23 +21,17 @@ if (isset($_POST["contribuyente_tipo"])) {
    $tipo_contribuyente=0;
 }
 
-$datos_factura_cantidad = $reporteria->get_datos_factura_cantidad($n_venta_cf,$id_paciente_cf);
-$datos_factura_producto = $reporteria->get_datos_factura($n_venta_cf,$id_paciente_cf);
-$datos_factura_precio_u = $reporteria->get_datos_factura_p_unitario($n_venta_cf,$id_paciente_cf);
-$datos_factura_subtotal = $reporteria->get_datos_factura_subtotal($n_venta_cf,$id_paciente_cf);
-$datos_factura_paciente = $reporteria->get_datos_factura_paciente($id_paciente_cf);
-$datos_factura_venta    = $reporteria->get_datos_factura_venta($n_venta_cf,$id_paciente_cf);
-
-//var_dump($datos_factura_precio_u);exit();
-//$datos_empresa = $reporteria->get_datos_empresa($_GET["empresa"]);
-date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y");
 ?>
+
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-   <style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCF</title>
+</head>
+<body>
+<style>
       html{
       	margin-top: 0;
         margin-left: 10px;
@@ -71,24 +64,22 @@ date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y");
        border-collapse: collapse;
     }
    </style>
-  </head>
-  <body>
 
-<div style="margin-top: 70px;height:525px" >
-  <?php include 'helpers/plantilla_ccf.php'; ?>
-</div>
-
-<!-- PARTE 2-->
+<!--PARTE 1-->
+<div style="margin-top: 70px;height:525px"> <!--div 1--> 
+<?php	include 'helpers/plantilla_ccf_emp.php'; ?>
+</div><!--FIN div-->
+<!--PARTE 2-->
 <div style="margin-top: 25px;height:445px" >
-  <?php include 'helpers/plantilla_ccf.php'; ?>
+	<?php	include 'helpers/plantilla_ccf_emp.php'; ?>
 </div>
-
-
 <!--PARTE 3-->
 <div style="margin-top: 110px;" >
-  <?php include 'helpers/plantilla_ccf.php'; ?>
+	<?php	include 'helpers/plantilla_ccf_emp.php'; ?>
 </div>
+
 </body>
+
 </html>
 <?php
 $salida_html = ob_get_contents();

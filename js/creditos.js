@@ -192,6 +192,9 @@ $.ajax({
 }
 
 function listar_ventas_ccf(){
+  array_total_ccf = [];
+  totalFinalCcf = 0;
+
   let empresa = $("#empresa").val();
   if(empresa==""){
     Swal.fire('Error!, Debe Seleccionar una empresa','','error');
@@ -1492,7 +1495,8 @@ function eliminar_oid(id_orden, numero_orden, id_paciente){
 }
 
 /////////////////////////agregar item a credito fiscal //////////////
-var array_total_ccf = [];
+let array_total_ccf = [];
+
 $(document).on('click', '.add_item_ccf', function(){
 
   let id_item = $(this).attr("id");

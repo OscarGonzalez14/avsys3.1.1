@@ -57,9 +57,9 @@ require_once("modals/modal_correlativo_factura.php");
                     <div class="input-group">
                       <a href="oid_aprobadas.php" class="btn btn-info form-control" style="background:#001a33;margin:solid #000066 1px" data-backdrop="static" data-keyboard="false"><i class="fas fa-file-import"></i>&nbsp;&nbsp;&nbsp;OIDS </a>
                   </div>
-                </div>
-                
+                </div>                                
               </div>
+
         <table id="creditos_oid" class="table-hover table-bordered" width="100%" style="font-size:12px">
            <thead style="background:#034f84;color:white;text-align: center;">
             <tr>
@@ -115,7 +115,7 @@ require_once("modals/modal_correlativo_factura.php");
 </div>
 
 <div id="modal_ccf_group" class="modal fade" data-modal-index="2">
-        <div class="modal-dialog modal-lg" style="max-width: 55%">
+        <div class="modal-dialog modal-lg" style="max-width: 85%">
           <div class="modal-content bg-info">
             <div class="modal-header">
               <span class="modal-title">SELECCIONAR PACIENTE</span>              
@@ -125,7 +125,7 @@ require_once("modals/modal_correlativo_factura.php");
             <div class="modal-body" style="background: white;color:black">
               <div class="card-body p-0" style="margin:1px">
                 <table id="data_ventas_ccf_group" width="100%" class="table-hover table-bordered">
-                  <button class="btn btn-dark">IMPRIMIR CCF</button>
+                  <button class="btn btn-dark" data-toggle="modal" data-target="#modal-default" onClick="get_data_ccf();"><i class="fas fa-print" ></i> IMPRIMIR CCF</button>
                   <thead class="bg-secondary" style="text-align:center;font-size: 12px">
                     <tr>
                       <th>#Venta</th>          
@@ -152,6 +152,71 @@ require_once("modals/modal_correlativo_factura.php");
         </div>
 </div>
 
+
+ <div class="modal fade" id="modal-default">
+        <div class="modal-dialog" style="max-width: 80%">
+          <div class="modal-content">
+            <div class="modal-header bg-dark">
+              <h4 class="modal-title" style="font-size: 14px">DETALLES CREDITOS FISCAL</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      <div class="modal-body">
+
+        <form method="post" action="ccf_empresarial_pdf.php" target="_blank">
+          <div class="form-row">
+
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Empresa</label>
+              <input type="text" class="form-control" id="empresa_cff" name="empresa_cff">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">Dirección</label>
+              <input type="text" class="form-control" id="direcion_ccf" name="direcion_ccf" required>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Registro</label>
+              <input type="text" class="form-control" id="registro_ccf" name="registro_ccf" required>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">NIT</label>
+              <input type="text" class="form-control" id="nit_ccf" name="nit_ccf" required>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="inputPassword4">Giro</label>
+              <input type="text" class="form-control" id="giro_ccf" name="giro_ccf" required>
+            </div>
+
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="contribuyente_tipo" name="contribuyente_tipo">
+                <label class="form-check-label" for="gridCheck">
+                  Gran contribuyente
+              </label>
+            </div>
+          </div>
+
+          <input type="hidden" id="monto_ccf_det" name="monto_ccf_det">
+          <input type="hidden" id="items_ccf_det" name="items_ccf_det">
+          <input type="hidden" id="items_lengt" name="items_lengt">
+        </div><!--fin form row--> 
+        <button type="submit" class="btn btn-primary btn-block">IMPRIMIR</button>
+      </form>
+      </div><!--MODAL BODY-->
+      <div class="modal-footer justify-content-between">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>              
+      </div>
+      </div>
+          <!-- /.modal-content -->
+      </div>
+        <!-- /.modal-dialog -->
+      </div>  
+
 <!--FIN MODAL PACIENTES-->
 <?php require_once("footer.php");?>
 <?php date_default_timezone_set('America/El_Salvador'); $hoy = date("d-m-Y H:i:s");?>
@@ -169,6 +234,7 @@ require_once("modals/modal_correlativo_factura.php");
 <script type="text/javascript" src="js/bootbox.min.js"></script>
 <script type="text/javascript" src="js/recibos.js"></script>
 <script type="text/javascript" src="js/empresas.js"></script>
+<script type="text/javascript" src="js/reporteria.js"></script>
 
   <script type="text/javascript">
     var title = document.getElementById("name_pag").value;

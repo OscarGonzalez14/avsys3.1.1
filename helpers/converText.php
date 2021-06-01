@@ -1,6 +1,6 @@
 <?php
-$n= 1070.70;
-$cantidad = number_format($n,2,".","");
+//$n= 1070.70;
+//$cantidad = number_format($n,2,".","");
 //echo $cantidad;
 $_moneda = 2;
 function numletras($numero,$_moneda)
@@ -366,6 +366,4 @@ $num_letrammd = cienmillon($nummierod);
 return $num_letrammd;
 }
 
-echo numletras(strval($cantidad),$_moneda);
 ?>
-

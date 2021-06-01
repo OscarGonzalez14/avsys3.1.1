@@ -33,6 +33,7 @@ switch ($_GET["op"]){
     $class="";
     $href="";
     $event = "";
+    $event_ccf ='';
 
     if($row["saldo"] == 0){
         $icon="fas fa-print";
@@ -40,22 +41,25 @@ switch ($_GET["op"]){
         $txt = '';
         $href='imprimir_factura_pdf.php?n_venta='.$row['numero_venta'].'&id_paciente='.$row['id_paciente'].'';
         $event = 'print_invoices';
+        $event_ccf ='emitir_ccf';
     }elseif ($row["saldo"] > 0) {
         $icon=" fas fa-clock";
         $atrib = "btn btn-secondary";
         $txt = '';
         $href='#';
         $event = "";
+        $event_ccf ='';
     }
 
     $sub_array[] = $row["numero_venta"];
     $sub_array[] = $row["nombres"];
     $sub_array[] = $row["evaluado"];    
-    $sub_array[] = "$".number_format($row["monto"],2,".",","); 
+    $sub_array[] = "$".number_format((float)$row["monto"],2,".",","); 
     $sub_array[] = "$".number_format($row["saldo"],2,".",",");
     $sub_array[] = '<button type="button" onClick="realizarAbonos('.$row["id_paciente"].','.$row["id_credito"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-sm bg-warning" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus" aria-hidden="true" style="color:white"></i></button>';
      $sub_array[] = '<button type="button" onClick="verDetAbonos('.$row["id_paciente"].',\''.$row["numero_venta"].'\');" id="'.$row["id_paciente"].'" class="btn btn-md bg-success btn-sm"><i class="fas fa-file-invoice-dollar" aria-hidden="true" style="color:white"></i></button>';
-    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>'; 
+    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\');"><i class="'.$icon.'"></i>'.$txt.'</button>';
+    $sub_array[] = '<button type="button"  class="btn '.$atrib.' btn-sm" onClick="'.$event_ccf.'('.$row["id_paciente"].',\''.$row["numero_venta"].'\',\''.$row["nombres"].'\');" ><i class="'.$icon.'"></i>'.$txt.'</button>'; 
     $data[] = $sub_array;
   }
 
@@ -138,7 +142,7 @@ switch ($_GET["op"]){
     if($row["saldo"] == 0){
         $icon="fas fa-print";
         $atrib = "btn btn-info";
-        $txt = 'CANC.';
+        $txt = '';
         $href='imprimir_factura_pdf.php?n_venta='.$row['numero_venta'].'&id_paciente='.$row['id_paciente'].'';
         $event = 'print_invoices';
     }elseif ($row["saldo"] > 0) {

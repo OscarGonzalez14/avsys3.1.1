@@ -213,7 +213,6 @@ public function registrar_impresion_factura($sucursal,$numero_venta,$id_usuario,
     $sql->execute();
 
 }
-
 /************************************************************
 *****************ORDENES DE DESCUENTO EN PLANILLA************
 *************************************************************/

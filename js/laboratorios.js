@@ -612,7 +612,6 @@ $(document).on('click', '.send_orden', function(){
 
   var checkbox = document.getElementById(id_item);
   let check_state = checkbox.checked;
-  console.log(check_state);
 
   if (check_state == true) {
   	    let obj = {
