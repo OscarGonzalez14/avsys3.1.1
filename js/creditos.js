@@ -11,7 +11,6 @@ $(document).ready(ocultar_element_ini);
 function ocultar_element_ini(){
   document.getElementById("print_orden_desp").style.display = "none";
   document.getElementById("btn_print_recibos").style.display = "none";
-
 }
 
 //////// AL VER DETALLES EN OID APROBADAS, OCULTAR BOTONES 
@@ -697,6 +696,7 @@ function print_invoices(id_paciente,numero_venta){
  var sucursal = $("#sucursal").val();
  var id_usuario = $("#usuario").val();
  var fecha_fac = $("#fecha_facturacion").val();
+ var tipo_comprobante = $("#tipo_comprobante").val();
  $("#id_paciente_venta_factura").val(id_paciente);
  $("#print_invoices").modal("show");
  $("#n_venta_factura").val(numero_venta);
@@ -704,7 +704,7 @@ function print_invoices(id_paciente,numero_venta){
  $.ajax({
   url:"ajax/creditos.php?op=get_correlativo_factura",
   method:"POST",
-  data:{sucursal:sucursal},
+  data:{sucursal:sucursal,id_usuario:id_usuario,tipo_comprobante:tipo_comprobante,fecha_fac:fecha_fac},
   cache:false,
   dataType:"json",
   success:function(data){ 
@@ -722,6 +722,17 @@ function print_invoices(id_paciente,numero_venta){
 }
 
 
+function habilita_edit_cliente_cff(){
+  var checkbox = document.getElementById('editar_cliente_cff');
+checkbox.addEventListener( 'change', function() {
+    if(this.checked) {
+      $("#edit_cliente_cff").attr("readonly", false); 
+    }else{
+       $("#edit_cliente_cff").attr("readonly", true);
+    }
+});
+}
+
 function registrar_impresion(){
 
   let sucursal = $("#sucursal").val();
@@ -729,12 +740,14 @@ function registrar_impresion(){
   let correlativo_fac = $("#correlativo_factura").html();
   let numero_venta = $("#n_venta_factura").val();
   var id_paciente = $("#id_paciente_venta_factura").val();
+  let tipo_comprobante = $("#tipo_comprobante").val();
+
   $("#print_invoices").modal("hide"); 
   ///////////// REGISTRA CORRELATIVO EN BD ////////////////
   $.ajax({
     url:"ajax/creditos.php?op=save_correlativo_factura",
     method:"POST",
-    data:{sucursal:sucursal,numero_venta:numero_venta,id_usuario:id_usuario,correlativo_fac:correlativo_fac,id_paciente:id_paciente},
+    data:{sucursal:sucursal,numero_venta:numero_venta,id_usuario:id_usuario,correlativo_fac:correlativo_fac,id_paciente:id_paciente,tipo_comprobante:tipo_comprobante},
     cache:false,
     dataType:"json",
     success:function(data){ 

@@ -222,7 +222,7 @@ body.modal-open {
 
 <div class="col-sm-12">
   <label for="comment">Observaciones</label>
-  <input class="form-control" id="observaciones" name="observaciones" placeholder="Observaciones" required>
+  <input class="form-control" id="observaciones" name="observaciones" placeholder="Observaciones" onkeyup="mayus(this);" required>
 </div>
 <input class="form-control" id="codigop" name="codigop" type="hidden" readonly>
 <input type="hidden" name="id_usuario" id="id_usuario" value="<?php echo $_SESSION["id_usuario"];?>"/>

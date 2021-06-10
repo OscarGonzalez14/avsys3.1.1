@@ -8,11 +8,14 @@ $creditos = new Creditos();
 switch ($_GET["op"]){
 
   case 'get_correlativo_factura':
-    $datos=$creditos->get_correlativo_factura($_POST["sucursal"]);
+    $datos=$creditos->get_correlativo_factura($_POST["sucursal"],$_POST["tipo_comprobante"],$_POST["fecha_fac"]);
 
     if(is_array($datos)==true and count($datos)>0){
       foreach($datos as $row){
         $output["correlativo"] = $row["n_correlativo"];
+        $output["tipo_comprobante"] = $row["tipo_comprobante"];
+        $output["fecha_fac"] = $row["fecha_fac"];
+
       }
     }
 
@@ -328,9 +331,9 @@ switch ($_GET["op"]){
   break;
 
   case 'save_correlativo_factura':
-      $datos = $creditos->validar_correlativo($_POST["correlativo_fac"],$_POST["sucursal"]);
+      $datos = $creditos->validar_correlativo($_POST["correlativo_fac"],$_POST["sucursal"],$_POST["tipo_comprobante"],$_POST["numero_venta"]);
         if(is_array($datos)==true and count($datos)==0){  
-        $creditos->registrar_impresion_factura($_POST["sucursal"],$_POST["numero_venta"],$_POST["id_usuario"],$_POST["correlativo_fac"],$_POST["id_paciente"]);
+        $creditos->registrar_impresion_factura($_POST["sucursal"],$_POST["id_usuario"],$_POST["correlativo_fac"],$_POST["numero_venta"],$_POST["id_paciente"],$_POST["tipo_comprobante"]);
         $messages[]="ok";
       }else{
         $errors[]="error";
